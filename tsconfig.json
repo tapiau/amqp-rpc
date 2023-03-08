@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "declaration": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "paths": {
+      "@src/*": ["src/*"]
+    },
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "es6",
+//    "sourceMap": true,
+    "types": [
+      "mocha",
+      "node"
+    ],
+  },
+  "include": ["src"],
+  "exclude": [
+    "**/*config.ts",
+    "node_modules/",
+    ".nyc_output/",
+    "dist/",
+    "lib/",
+    "**/*.test.*",
+    "**/*.testdata.ts"
+  ]
+}

@@ -4,7 +4,7 @@
   "version": "2.1.0",
   "homepage": "http://elastic.io",
   "author": "elastic.io GmbH <info@elastic.io>",
-  "main": "src/index.js",
+  "main": "lib/index.ts",
   "license": "ISC",
   "engines": {
     "node": ">=8.4.0"
@@ -17,23 +17,36 @@
     "url": "https://github.com/elasticio/amqp-rpc/issues"
   },
   "scripts": {
-    "docs": "rimraf ./docs && jsdox --output ./docs ./src",
-    "lint": "eslint --ignore-path .gitignore .",
-    "prepublish": "npm run lint && npm run test",
-    "test": "node_modules/.bin/mocha --require ./test/bootstrap.js --timeout 10000 --recursive --reporter nyan ./test/**/*.test.js",
-    "cover": "istanbul cover node_modules/.bin/_mocha --  --require ./test/bootstrap.js --timeout 10000 --recursive --reporter nyan ./test/**/*.test.js"
+    "build": "tsc --build",
+    "lint": "eslint --ignore-path .gitignore ."
   },
   "devDependencies": {
-    "amqplib": "0.5.1",
-    "chai": "4.1.2",
-    "chai-as-promised": "7.1.1",
-    "eslint": "4.6.1",
-    "eslint-config-node": "1.6.0",
-    "istanbul": "0.4.5",
-    "jsdox": "0.4.10",
-    "mocha": "3.5.3",
-    "rimraf": "2.6.2",
-    "sinon": "4.1.2",
-    "sinon-chai": "2.14.0"
+    "@types/amqplib": "^0.10.1",
+    "@types/chai": "^4.2.22",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^18.14.5",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "amqplib": "^0.10.3",
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^8.35.0",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-json": "^3.1.0",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "istanbul": "^0.4.5",
+    "jsdox": "^0.4.10",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "rimraf": "^4.3.1",
+    "sinon": "^15.0.1",
+    "sinon-chai": "^3.7.0",
+    "tsc-watch": "^4.5.0",
+    "typescript": "^4.9.5"
   }
 }
