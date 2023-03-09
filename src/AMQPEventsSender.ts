@@ -110,8 +110,20 @@ export default class AMQPEventsSender extends EventEmitter {
         if (this._channel) {
             return;
         }
+
         try {
             this._channel = await this._connection.createChannel();
+
+            const queue = await this._channel.assertQueue(
+                this._queueName,
+                {
+                    exclusive: true,
+                }
+            );
+            if (this._queueName === "") {
+                this._queueName = queue.queue;
+            }
+
             this._subscribeToChannel();
         } catch (error) {
             this.emit("error", error);
