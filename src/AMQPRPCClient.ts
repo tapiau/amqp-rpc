@@ -132,16 +132,16 @@ export default class AMQPRPCClient extends AMQPEndpoint {
 
         console.log("AMQPRPCClient/start::this", this._repliesQueue);
 
-        // if (this._params.repliesQueue === "") {
-        //     this._repliesQueue = this._params.requestsQueue + "." + uuid();
-        //
-        //     await this._channel.assertQueue(this._repliesQueue, {exclusive: true});
-        // }
-
         if (this._params.repliesQueue === "") {
-            const response = await this._channel.assertQueue("", {exclusive: true});
-            this._repliesQueue = response.queue;
+            this._repliesQueue = this._params.requestsQueue + "." + uuid();
         }
+
+        await this._channel.assertQueue(this._repliesQueue, {exclusive: true});
+
+        // if (this._params.repliesQueue === "") {
+        //     const response = await this._channel.assertQueue("", {exclusive: true});
+        //     this._repliesQueue = response.queue;
+        // }
 
         const consumeResult = await this._channel.consume(this._repliesQueue, (message) => this._dispatchReply(message));
         this._consumerTag = consumeResult.consumerTag;

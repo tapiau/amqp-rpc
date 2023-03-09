@@ -8,6 +8,13 @@ import AMQPRPCClient from "./AMQPRPCClient";
 
     const client = new AMQPRPCClient(connection, {requestsQueue});
     await client.start();
-    const response = await client.sendCommand("hello", ["Aliaaasa"]);
+    let response: any;
+    response = await client.sendCommand("hello", ["zibi1"]);
     console.log("Alisa got response:", response);
+    response = await client.sendCommand("hello", ["zibi2"]);
+    console.log("Alisa got response:", response);
+    response = await client.sendCommand("hello", ["zibi3"]);
+    console.log("Alisa got response:", response);
+
+    // client.disconnect();
 })();
