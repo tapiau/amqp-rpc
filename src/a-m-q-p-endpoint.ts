@@ -1,12 +1,5 @@
 import {Channel, Connection} from "amqplib";
-
-export interface AMQPRPCParams {
-    requestsQueue?: string;
-    repliesQueue?: string;
-    timeout?: number;
-    defaultMessageOptions?: any;
-}
-
+import AMQPRPCParams from "./a-m-q-p-r-p-c-params";
 
 /**
  * Base class for AMQPRPCServer/AMQPRPCClient.
