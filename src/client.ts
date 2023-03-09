@@ -10,11 +10,11 @@ import AMQPRPCClient from "./AMQPRPCClient";
     await client.start();
     let response: any;
     response = await client.sendCommand("hello", ["zibi1"]);
-    console.log("Alisa got response:", response);
+    console.log("Got response:", response);
     response = await client.sendCommand("hello", ["zibi2"]);
-    console.log("Alisa got response:", response);
+    console.log("Got response:", response);
     response = await client.sendCommand("hello", ["zibi3"]);
-    console.log("Alisa got response:", response);
+    console.log("Got response:", response);
 
     // client.disconnect();
 })();

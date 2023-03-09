@@ -1,12 +1,11 @@
 import {Channel, Connection} from "amqplib";
 
 export interface AMQPRPCParams {
-  requestsQueue?: string;
-  repliesQueue?: string;
-  timeout?: number;
-  defaultMessageOptions?: any;
+    requestsQueue?: string;
+    repliesQueue?: string;
+    timeout?: number;
+    defaultMessageOptions?: any;
 }
-
 
 
 /**
@@ -24,8 +23,8 @@ export default class AMQPEndpoint {
     protected _channel: Channel | null;
 
     constructor(
-      private _connection: Connection,
-      protected _params: AMQPRPCParams = {}
+        private _connection: Connection,
+        protected _params: AMQPRPCParams = {}
     ) {
         this._params = Object.assign({}, _params);
         this._channel = null;
