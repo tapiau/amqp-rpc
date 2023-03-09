@@ -2,6 +2,7 @@ import Command from "./Command";
 import CommandResult from "./CommandResult";
 import AMQPEndpoint, {AMQPRPCParams} from "./AMQPEndpoint";
 import {Connection, Message} from "amqplib";
+import {v4 as uuid} from "uuid";
 
 /**
  * This class is responsible for sending commands to the RPC server.
@@ -31,6 +32,9 @@ export default class AMQPRPCClient extends AMQPEndpoint {
         connection: Connection,
         params: AMQPRPCParams = {}
     ) {
+
+        console.log("AMQPRPCClient/constructor::params", params);
+
         params.repliesQueue = params.repliesQueue || "";
         params.timeout = params.timeout || AMQPRPCClient.TIMEOUT;
 
@@ -40,6 +44,7 @@ export default class AMQPRPCClient extends AMQPEndpoint {
         super(connection, params);
 
         this._repliesQueue = params.repliesQueue;
+
         this._cmdNumber = 0;
         this._requests = new Map();
         this._defaultMessageOptions = params.defaultMessageOptions || {};
@@ -65,11 +70,18 @@ export default class AMQPRPCClient extends AMQPEndpoint {
 
         const cmd = new Command(command, args);
 
+        console.log("AMQPRPCClient/sendCommand::this._repliesQueue", this._repliesQueue);
+
         const correlationId = (this._cmdNumber++).toString();
         const replyTo = this._repliesQueue;
         const timeout = this._params.timeout;
         const requestsQueue = this._params.requestsQueue;
         const commonProperties = { replyTo, correlationId };
+
+        console.log("AMQPRPCClient/sendCommand::messageOptions", messageOptions);
+        console.log("AMQPRPCClient/sendCommand::this._defaultMessageOptions", this._defaultMessageOptions);
+        console.log("AMQPRPCClient/sendCommand::commonProperties", commonProperties);
+
 
         const properties = Object.assign(
             {},
@@ -92,6 +104,10 @@ export default class AMQPRPCClient extends AMQPEndpoint {
             command,
         });
 
+        console.log("AMQPRPCClient/sendCommand::requestsQueue", requestsQueue);
+        console.log("AMQPRPCClient/sendCommand::cmd", cmd);
+        console.log("AMQPRPCClient/sendCommand::properties", properties);
+
         this._channel.sendToQueue(
             requestsQueue,
             cmd.pack(),
@@ -113,6 +129,14 @@ export default class AMQPRPCClient extends AMQPEndpoint {
         if (!this._channel) {
             throw new Error("Channel is already initialized");
         }
+
+        console.log("AMQPRPCClient/start::this", this._repliesQueue);
+
+        // if (this._params.repliesQueue === "") {
+        //     this._repliesQueue = this._params.requestsQueue + "." + uuid();
+        //
+        //     await this._channel.assertQueue(this._repliesQueue, {exclusive: true});
+        // }
 
         if (this._params.repliesQueue === "") {
             const response = await this._channel.assertQueue("", {exclusive: true});

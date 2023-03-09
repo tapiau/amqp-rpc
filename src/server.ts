@@ -7,7 +7,7 @@ import AMQPRPCServer from "./AMQPRPCServer";
     const connection = await amqplib.connect("amqp://localhost");
 
     // server start
-    const server = new AMQPRPCServer(connection, {requestsQueue: "halo.halo.mietku"});
+    const server = new AMQPRPCServer(connection, { requestsQueue: "halo.halo.mietku" });
     server.addCommand("hello", (name) => ({message: `Hello, ${name}!`}));
     await server.start();
 

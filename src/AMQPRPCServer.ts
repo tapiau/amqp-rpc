@@ -48,10 +48,15 @@ export default class AMQPRPCServer extends AMQPEndpoint {
             throw Error("Channel is not initialized");
         }
 
+        const response = await this._channel.assertQueue(this._requestsQueue, {exclusive: true});
+
         if (this._requestsQueue === "") {
-            const response = await this._channel.assertQueue("", {exclusive: true});
             this._requestsQueue = response.queue;
         }
+        // if (this._requestsQueue === "") {
+        //     const response = await this._channel.assertQueue("", {exclusive: true});
+        //     this._requestsQueue = response.queue;
+        // }
 
         const consumeResult = await this._channel.consume(this._requestsQueue, (message) => this._handleMsg(message));
         this._consumerTag = consumeResult.consumerTag;
