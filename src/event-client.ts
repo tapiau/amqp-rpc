@@ -2,22 +2,30 @@ import amqplib from "amqplib";
 import AMQPRPCClient from "./AMQPRPCClient";
 import AMQPEventsSender from "./AMQPEventsSender";
 import * as process from "process";
+import AMQPEventsReceiver from "./AMQPEventsReceiver";
 
 (async () => {
     const requestsQueue = "halo.halo.mietku";
-
+    const responseQueue = "halo.halo.mietku.response";
     const connection = await amqplib.connect("amqp://localhost");
 
-    const client = new AMQPEventsSender(connection, { queueName: "halo.halo.mietku" });
-    await client.start();
 
-    client.send({
+    const receiver = new AMQPEventsReceiver(connection, { queueName: responseQueue});
+    await receiver.start();
+
+    receiver.setHandler((data) => {
+        console.log("RESPONSE: ", data);
+    });
+
+
+    const sender = new AMQPEventsSender(connection, { queueName: requestsQueue });
+    await sender.start();
+
+    sender.send({
         aaa: "bbb",
         ccc: "ddd",
         time: Date.now(),
     }).then();
 
     console.log("Sent event");
-    await client.disconnect();
-    process.exit(0);
 })();

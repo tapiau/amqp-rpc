@@ -110,6 +110,10 @@ export default class AMQPEventsReceiver extends EventEmitter {
         }
     }
 
+    setHandler(handler: (message: Message) => void) {
+        this.on("data", handler);
+    }
+
     /**
      * Allows to get generated value when params.repliesQueue was set to '' (empty string) or omitted
      * @returns {String} an actual name of the queue used by the instance for receiving replies
