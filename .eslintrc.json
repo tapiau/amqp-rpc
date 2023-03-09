@@ -16,15 +16,10 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "check-file"
+        "filename-rules"
     ],
     "rules": {
-        "check-file/filename-naming-convention":[
-            "error",
-            {
-                "*.{js,ts}":"KEBAB_CASE"
-            }
-        ],
+        "filename-rules/match": [2, "kebab-case"],
         "indent": [
             "error",
             4
@@ -37,9 +32,7 @@
             "error",
             "double"
         ],
-        "semi": [
-            "error",
-            "always"
-        ]
+        "semi": "off",
+        "@typescript-eslint/semi": ["error"]
     }
 }

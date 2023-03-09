@@ -16,4 +16,4 @@ export default interface AMQPEventsParams {
     exclusive?: boolean;
     queueName: string;
     TTL?: number;
-};
+}

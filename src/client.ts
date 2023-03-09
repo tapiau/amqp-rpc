@@ -1,5 +1,5 @@
 import amqplib from "amqplib";
-import AMQPRPCClient from "./AMQPRPCClient";
+import AMQPRPCClient from "./a-m-q-p-r-p-c-client";
 
 (async () => {
     const requestsQueue = "halo.halo.mietku";

@@ -1,6 +1,6 @@
-import Command from "./Command";
-import CommandResult, {CommandResultState} from "./CommandResult";
-import AMQPEndpoint, {AMQPRPCParams} from "./AMQPEndpoint";
+import Command from "./command";
+import CommandResult, {CommandResultState} from "./command-result";
+import AMQPEndpoint, {AMQPRPCParams} from "./a-m-q-p-endpoint";
 import {Connection, Message} from "amqplib";
 
 

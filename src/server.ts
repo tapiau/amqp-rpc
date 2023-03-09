@@ -1,5 +1,5 @@
 import amqplib from "amqplib";
-import AMQPRPCServer from "./AMQPRPCServer";
+import AMQPRPCServer from "./a-m-q-p-r-p-c-server";
 
 
 

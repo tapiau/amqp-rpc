@@ -1,6 +1,6 @@
 import amqplib from "amqplib";
-import AMQPEventsReceiver from "./AMQPEventsReceiver";
-import AMQPEventsSender from "./AMQPEventsSender";
+import AMQPEventsReceiver from "./a-m-q-p-events-receiver";
+import AMQPEventsSender from "./a-m-q-p-events-sender";
 
 (async () => {
     const requestsQueue = "halo.halo.mietku";
