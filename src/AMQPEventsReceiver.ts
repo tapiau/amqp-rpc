@@ -1,7 +1,6 @@
 import EventEmitter from "events";
 import {Connection, Message} from "amqplib";
-import {AMQPEventsParams} from "./AMQPEventsSender";
-
+import AMQPEventsParams from "./AMQPEventsParams";
 
 /**
  * @class AMQPEventsReceiver

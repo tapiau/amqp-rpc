@@ -15,9 +15,16 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "check-file"
     ],
     "rules": {
+        "check-file/filename-naming-convention":[
+            "error",
+            {
+                "*.{js,ts}":"KEBAB_CASE"
+            }
+        ],
         "indent": [
             "error",
             4

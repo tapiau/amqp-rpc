@@ -1,27 +1,6 @@
 import {Connection} from "amqplib";
 import EventEmitter from "events";
-import {AMQPRPCParams} from "./AMQPEndpoint";
-
-// const EventEmitter = require("events");
-
-/**
- * @class AMQPEventsSender
- * Provides stream like "sink" for events, that should be
- * transported though amqp
- * Should be used with AMQPEventsReceiver. In such case
- * will correctly handle queue removal, connection/disconnection
- * listener destroy providing stream-like events inteface (end/error/close);
- * @emits AMQPEventsSender#data
- * @emits AMQPEventsSender#close
- * @emits AMQPEventsSender#end
- */
-//TODO think about: this class may be transformed to real ReadableStream
-//when it would be required
-
-export interface AMQPEventsParams {
-    queueName: string;
-    TTL?: number;
-}
+import AMQPEventsParams from "./AMQPEventsParams";
 
 
 export default class AMQPEventsSender extends EventEmitter {
@@ -37,6 +16,7 @@ export default class AMQPEventsSender extends EventEmitter {
     private _params: AMQPEventsParams = {
         queueName: "",
         TTL: 10 * 60 * 1000,
+        exclusive: false,
     };
     private _queueName: string;
     private _channel: any;
@@ -51,6 +31,8 @@ export default class AMQPEventsSender extends EventEmitter {
             this._params,
             params
         );
+
+        console.log("AMQPEventsSender constructor params", this._params, params);
 
         if (!params.queueName) {
             throw Error("queueName is not defined");

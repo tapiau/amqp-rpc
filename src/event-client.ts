@@ -1,7 +1,5 @@
 import amqplib from "amqplib";
-import AMQPRPCClient from "./AMQPRPCClient";
 import AMQPEventsSender from "./AMQPEventsSender";
-import * as process from "process";
 import AMQPEventsReceiver from "./AMQPEventsReceiver";
 
 (async () => {

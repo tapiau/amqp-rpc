@@ -1,9 +1,6 @@
 import amqplib from "amqplib";
-import AMQPRPCServer from "./AMQPRPCServer";
 import AMQPEventsReceiver from "./AMQPEventsReceiver";
 import AMQPEventsSender from "./AMQPEventsSender";
-
-
 
 (async () => {
     const requestsQueue = "halo.halo.mietku";
@@ -14,7 +11,12 @@ import AMQPEventsSender from "./AMQPEventsSender";
     const receiver = new AMQPEventsReceiver(connection, { queueName: requestsQueue });
     await receiver.start();
 
-    const sender = new AMQPEventsSender(connection, { queueName: responseQueue });
+    const sender = new AMQPEventsSender(
+        connection,
+        {
+            queueName: responseQueue,
+        }
+    );
     await sender.start();
 
     receiver.setHandler((data: any) => {
