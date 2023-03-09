@@ -2,7 +2,7 @@ import Command from "./command";
 import CommandResult, {CommandResultState} from "./command-result";
 import AMQPEndpoint from "./a-m-q-p-endpoint";
 import {Connection, Message} from "amqplib";
-import {AMQPRPCParams} from "./a-m-q-p-r-p-c-params";
+import AMQPRPCParams from "./a-m-q-p-r-p-c-params";
 
 
 /**

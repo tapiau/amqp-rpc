@@ -3,7 +3,7 @@ import CommandResult from "./command-result";
 import AMQPEndpoint from "./a-m-q-p-endpoint";
 import {Connection, Message} from "amqplib";
 import {v4 as uuid} from "uuid";
-import {AMQPRPCParams} from "./a-m-q-p-r-p-c-params";
+import AMQPRPCParams from "./a-m-q-p-r-p-c-params";
 
 /**
  * This class is responsible for sending commands to the RPC server.

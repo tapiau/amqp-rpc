@@ -1,5 +1,5 @@
 import EventEmitter from "events";
-import {Connection, Message} from "amqplib";
+import {Channel, Connection, Message} from "amqplib";
 import AMQPEventsParams from "./a-m-q-p-events-params";
 
 /**
@@ -18,19 +18,13 @@ import AMQPEventsParams from "./a-m-q-p-events-params";
 
 export default class AMQPEventsReceiver extends EventEmitter {
 
-    /**
-     * @constructor
-     * @param {amqplib.Connection} amqpConnection
-     * @param {Object} params
-     * @param {String} [params.queueName=''] queue for receiving events, should correspond with AMQPEventsSender
-     *    default is '' which means auto-generated queue name, should correspond with AMQPEventsSender
-     */
     private _params: AMQPEventsParams = {
         queueName: "",
         TTL: 10 * 60 * 1000,
+        exclusive: false,
     };
     private _queueName: string;
-    private _channel: any;
+    private _channel: Channel | null;
 
     constructor(
         private _connection: Connection,
@@ -57,12 +51,19 @@ export default class AMQPEventsReceiver extends EventEmitter {
         }
 
         this._channel = await this._connection.createChannel();
-        const queue = await this._channel.assertQueue(this._queueName, {
-            exclusive: true,
-        });
+        const queue = await this._channel.assertQueue(
+            this._queueName,
+            {
+                exclusive: this._params.exclusive,
+            }
+        );
 
         if (this._queueName === "") {
             this._queueName = queue.queue;
+        }
+
+        if (!this._channel) {
+            throw Error("Channel is not defined");
         }
 
         this._channel.consume(this._queueName, this._handleMessage.bind(this));
@@ -92,7 +93,10 @@ export default class AMQPEventsReceiver extends EventEmitter {
         this.emit("close");
     }
 
-    _handleMessage(message: Message) {
+    _handleMessage(message: Message | null) {
+        if (!this._channel) {
+            throw Error("Channel is not defined");
+        }
         if (message === null) {
             this.emit("end");
             //FIXME disconnect returns promise
@@ -103,13 +107,16 @@ export default class AMQPEventsReceiver extends EventEmitter {
 
         try {
             const messageData = JSON.parse(message.content.toString());
+
+            console.log("messageData", messageData);
+
             this.emit("data", messageData);
         } catch (e) {
             this.emit("error", e);
         }
     }
 
-    setHandler(handler: (message: Message) => void) {
+    setHandler(handler: (message: any) => void) {
         this.on("data", handler);
     }
 

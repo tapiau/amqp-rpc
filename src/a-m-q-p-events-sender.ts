@@ -1,7 +1,6 @@
-import {Connection} from "amqplib";
+import {Channel, Connection} from "amqplib";
 import EventEmitter from "events";
 import AMQPEventsParams from "./a-m-q-p-events-params";
-
 
 export default class AMQPEventsSender extends EventEmitter {
 
@@ -19,7 +18,7 @@ export default class AMQPEventsSender extends EventEmitter {
         exclusive: false,
     };
     private _queueName: string;
-    private _channel: any;
+    private _channel: Channel | null;
 
     constructor(
         private _connection: Connection,
@@ -49,6 +48,9 @@ export default class AMQPEventsSender extends EventEmitter {
      * @retiurns {Promise}
      */
     async send(message: any) {
+        if (!this._channel) {
+            throw Error("Channel is not initialized");
+        }
         const packedMessage = Buffer.from(JSON.stringify(message));
         try {
             return this._channel.sendToQueue(this._queueName, packedMessage, {
@@ -99,7 +101,7 @@ export default class AMQPEventsSender extends EventEmitter {
             const queue = await this._channel.assertQueue(
                 this._queueName,
                 {
-                    exclusive: true,
+                    exclusive: this._params.exclusive,
                 }
             );
             if (this._queueName === "") {
@@ -119,6 +121,9 @@ export default class AMQPEventsSender extends EventEmitter {
      * and/or for error handling
      */
     _subscribeToChannel() {
+        if (!this._channel) {
+            throw Error("Channel is not initialized");
+        }
         this._channel
             .on("return", async (fields: any) => {
 

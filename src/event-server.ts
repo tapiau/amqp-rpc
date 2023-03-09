@@ -2,6 +2,7 @@ import amqplib from "amqplib";
 import AMQPEventsReceiver from "./a-m-q-p-events-receiver";
 import AMQPEventsSender from "./a-m-q-p-events-sender";
 
+
 (async () => {
     const requestsQueue = "halo.halo.mietku";
     const responseQueue = "halo.halo.mietku.response";
@@ -19,9 +20,7 @@ import AMQPEventsSender from "./a-m-q-p-events-sender";
     );
     await sender.start();
 
-    receiver.setHandler((data: any) => {
-        console.log("Got hello event", data);
-
+    const handler = (data: any) => {
         setTimeout(() => {
             data.time1 = Date.now();
             sender.send(data)
@@ -30,8 +29,9 @@ import AMQPEventsSender from "./a-m-q-p-events-sender";
                 })
             ;
         }, 5000);
+    };
 
-    });
+    receiver.setHandler(handler);
 
 
     // name of temporary queue, has to be passed somehow to client by external service
